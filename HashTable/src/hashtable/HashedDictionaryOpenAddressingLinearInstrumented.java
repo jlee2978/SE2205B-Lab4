@@ -34,12 +34,13 @@ public class HashedDictionaryOpenAddressingLinearInstrumented<K,V> implements Di
     public static void resetTotalProbes()
     {
        // add your code here
+        totalProbes = 0;
     }  
 
     public static int getTotalProbes()
     {
         // Change the return statement
-        return 0;
+        return totalProbes;
     }  
     
     public HashedDictionaryOpenAddressingLinearInstrumented()
@@ -271,6 +272,7 @@ public class HashedDictionaryOpenAddressingLinearInstrumented<K,V> implements Di
                 }
                 index = (index + 1) % hashTable.length; // Linear probing
             } // end if
+            totalProbes++;
         } // end while
         
         
