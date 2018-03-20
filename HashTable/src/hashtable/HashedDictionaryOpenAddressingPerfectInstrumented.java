@@ -1,7 +1,8 @@
 package hashtable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-    
+import java.util.Random;
+
 /**
  * A class that implements the ADT dictionary by using hashing and
  linear probing to resolve collisions.The dictionary is unsorted and has distinct search keys.
@@ -34,12 +35,13 @@ public class HashedDictionaryOpenAddressingPerfectInstrumented<K,V> implements D
     public static void resetTotalProbes()
     {
        // add your code here
+        totalProbes = 0;
     }  
 
     public static int getTotalProbes()
     {
         // Change the return statement
-        return 0;
+        return totalProbes;
     }  
     
     public HashedDictionaryOpenAddressingPerfectInstrumented()
