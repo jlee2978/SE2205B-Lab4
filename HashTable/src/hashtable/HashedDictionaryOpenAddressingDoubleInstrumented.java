@@ -155,7 +155,7 @@ public class HashedDictionaryOpenAddressingDoubleInstrumented<K,V> implements Di
     
 // ADD IN CODE FOR THE SECOND HASH FUNCION
 //>>>>>>>>>>>>> ADDED CODE >>>>>>>>>>>>>>
-    private int getSecondHashIndex(K key){
+    private int getSecondHashIndex(Object key){
         int val = key.toString().hashCode();
         val = Math.abs(val);
         
