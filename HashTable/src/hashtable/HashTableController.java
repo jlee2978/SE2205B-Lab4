@@ -88,8 +88,8 @@ public class HashTableController implements Initializable {
         this.console.clear();
 
         for (int i = 0; i < trials; i++) {
-            //stringData = generateRandomData(insertCount*2);
-            stringData = generateRandomData(insertCount);
+            stringData = generateRandomData(insertCount*2);
+            //stringData = generateRandomData(insertCount);
             
             linearTable = new HashedDictionaryOpenAddressingLinearInstrumented<String, String>(startingSize);
             doubleTable = new HashedDictionaryOpenAddressingDoubleInstrumented<String, String>(startingSize);
@@ -104,9 +104,9 @@ public class HashTableController implements Initializable {
             HashedDictionaryOpenAddressingPerfectInstrumented.resetTotalProbes();
 
             this.console.appendText("The data is: \n" + getString(stringData) + "\n\n");
-            insertAllData(linearTable, stringData);
-            insertAllData(doubleTable, stringData);
-            insertAllData(perfectTable, stringData);
+            insertHalfData(linearTable, stringData);
+            insertHalfData(doubleTable, stringData);
+            insertHalfData(perfectTable, stringData);
 
             insertionLinearProbes += HashedDictionaryOpenAddressingLinearInstrumented.getTotalProbes();
             insertionDoubleProbes += HashedDictionaryOpenAddressingDoubleInstrumented.getTotalProbes();
