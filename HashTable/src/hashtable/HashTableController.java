@@ -88,8 +88,9 @@ public class HashTableController implements Initializable {
         this.console.clear();
 
         for (int i = 0; i < trials; i++) {
-            stringData = generateRandomData(insertCount*2);
-
+            //stringData = generateRandomData(insertCount*2);
+            stringData = generateRandomData(insertCount);
+            
             linearTable = new HashedDictionaryOpenAddressingLinearInstrumented<String, String>(startingSize);
             doubleTable = new HashedDictionaryOpenAddressingDoubleInstrumented<String, String>(startingSize);
             perfectTable = new HashedDictionaryOpenAddressingPerfectInstrumented<String, String>(startingSize);
@@ -275,6 +276,13 @@ public class HashTableController implements Initializable {
 
         // ADD CODE TO GENERATE THE RANDOM WORDS
         //>>>>>>>>>>> ADDED CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        
+        Random random = new Random();
+        
+        for (int i=0; i < size; i++) {
+            result[i] = firstSyl[random.nextInt(firstSyl.length)] + secondSyl[random.nextInt(secondSyl.length)] + thirdSyl[random.nextInt(thirdSyl.length)];
+        }
+        
         //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         return result;
     }
@@ -394,14 +402,35 @@ public class HashTableController implements Initializable {
 // ADD A METHOD HERE TO INSERT THE FIRST HALF OF THE DATA VALUES IN AN ARRAY
 // INTO A DICTIONARY
 //>>>>>>>>>>> ADDED CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    private void insertHalfData(DictionaryInterface<String, String> dict, String[] data) {
+        int firstHalfLength = data.length / 2;
+        
+        for (int i = 0; i < firstHalfLength; i++) {
+            dict.add(data[i], data[i]);
+        }
+    }    
+    
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 // ADD A METHOD HERE TO SEARCH FOR ITEMS FROM THE FIRST HALF OF THE ARRAY
 // (SUCCESS SEARCHES)
 //>>>>>>>>>>> ADDED CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    
+    private void searchFirstHalf(DictionaryInterface<String, String> dict, String[] data) {
+        int firstHalfLength = data.length / 2;
+        for(int i=0; i < firstHalfLength; i++) {
+            dict.contains(data[i]);
+        }
+    }
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 // ADD A METHOD HERE TO SEARCH FOR ITEMS FROM THE SECOND HALF OF THE ARRAY
 // (FAILURE SEARCHES)
 //>>>>>>>>>>> ADDED CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    private void searchSecondHalf(DictionaryInterface<String, String> dict, String[] data) {
+        int secondHalfLength = (data.length / 2) + 1;
+        for(int i=0; i < secondHalfLength; i++) {
+            dict.contains(data[i]);
+        }    
+    }
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     /**
      * A displayable representation of an array of Objects where toString is

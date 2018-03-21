@@ -337,6 +337,10 @@ public class HashedDictionaryOpenAddressingDoubleInstrumented<K,V> implements Di
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
         } // end while
         
+        if (!found) 
+        {
+            totalProbes++;
+        }
         
         // Assertion: Either key or null is found at hashTable[index]
         if (found || (removedStateIndex == -1) )
