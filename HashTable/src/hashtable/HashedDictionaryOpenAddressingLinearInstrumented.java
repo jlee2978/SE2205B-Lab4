@@ -201,13 +201,21 @@ public class HashedDictionaryOpenAddressingLinearInstrumented<K,V> implements Di
                     found = true; // key found
             else // follow probe sequence
                 index = (index + 1) % hashTable.length; // Linear probing
+            
+            totalProbes++;
         } // end while
         
         // Assertion: Either key or  null is found at hashTable[index]
         int result = -1;
         
         if (found)
+        {
             result = index;
+        }
+        else
+        {
+            totalProbes++;
+        }
             
         return result;
     } // end locate

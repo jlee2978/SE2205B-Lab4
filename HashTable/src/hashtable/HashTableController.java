@@ -113,22 +113,64 @@ public class HashTableController implements Initializable {
             insertionPerfectProbes += HashedDictionaryOpenAddressingPerfectInstrumented.getTotalProbes();
 
             // ADD CODE HERE TO DO SUCCESSFULL AND FAILURE SEARCHES
+            HashedDictionaryOpenAddressingLinearInstrumented.resetTotalProbes();
+            HashedDictionaryOpenAddressingDoubleInstrumented.resetTotalProbes();
+            HashedDictionaryOpenAddressingPerfectInstrumented.resetTotalProbes();
+			
+            // count probes for successful search
+            searchFirstHalf(linearTable, stringData);
+            searchFirstHalf(doubleTable, stringData);
+            searchFirstHalf(perfectTable, stringData);
+			
+            successLinearProbes += HashedDictionaryOpenAddressingLinearInstrumented.getTotalProbes();
+            successDoubleProbes += HashedDictionaryOpenAddressingDoubleInstrumented.getTotalProbes();
+            successPerfectProbes += HashedDictionaryOpenAddressingPerfectInstrumented.getTotalProbes();	
+
+            // count probes for failure search
+            HashedDictionaryOpenAddressingLinearInstrumented.resetTotalProbes();
+            HashedDictionaryOpenAddressingDoubleInstrumented.resetTotalProbes();
+            HashedDictionaryOpenAddressingPerfectInstrumented.resetTotalProbes();	
+
+            searchSecondHalf(linearTable, stringData);
+            searchSecondHalf(doubleTable, stringData);
+            searchSecondHalf(perfectTable, stringData);
+			
+            failureLinearProbes += HashedDictionaryOpenAddressingLinearInstrumented.getTotalProbes();
+            failureDoubleProbes += HashedDictionaryOpenAddressingDoubleInstrumented.getTotalProbes();
+            failurePerfectProbes += HashedDictionaryOpenAddressingPerfectInstrumented.getTotalProbes();			
         }
 
         this.console.appendText("Linear hashing\n");
         this.console.appendText("    Total probes for inserting data values: " + insertionLinearProbes + "\n\n");
         this.console.appendText("       Average probes made: " + insertionLinearProbes / (float) (trials * insertCount) + "\n\n");
         // ADD CODE HERE TO REPORT THE RESULTS FOR THE SUCCESS AND FAILURE SEARCHES
+this.console.appendText("    Total probes for searchFirstHalf (successful search): " + successLinearProbes + "\n\n");
+        this.console.appendText("       Average probes made for searchFirstHalf (successful search): " + successLinearProbes / (float) (trials * insertCount) + "\n\n");		
+		
+        this.console.appendText("    Total probes for searchSecondHalf (failure search): " + failureLinearProbes + "\n\n");
+        this.console.appendText("       Average probes made for searchFirstHalf (failure search): " + failureLinearProbes / (float) (trials * insertCount) + "\n\n");				
 
         this.console.appendText("Double hashing\n");
         this.console.appendText("    Total probes for inserting data values: " + insertionDoubleProbes + "\n\n");
         this.console.appendText("       Average probes made: " + insertionDoubleProbes / (float) (trials * insertCount) + "\n\n");
         // ADD CODE HERE TO REPORT THE RESULTS FOR THE SUCCESS AND FAILURE SEARCHES
+        this.console.appendText("    Total probes for searchFirstHalf (successful search): " + successDoubleProbes + "\n\n");
+        this.console.appendText("       Average probes made for searchFirstHalf (successful search): " + successDoubleProbes / (float) (trials * insertCount) + "\n\n");		
+		
+        this.console.appendText("    Total probes for searchSecondHalf (failure search): " + failureDoubleProbes + "\n\n");
+        this.console.appendText("       Average probes made for searchFirstHalf (failure search): " + failureDoubleProbes / (float) (trials * insertCount) + "\n\n");				
 
         this.console.appendText("Perfect hashing\n");
         this.console.appendText("    Total probes for inserting data values: " + insertionPerfectProbes + "\n\n");
         this.console.appendText("       Average probes made: " + insertionPerfectProbes / (float) (trials * insertCount) + "\n\n");
 
+        // ADD CODE HERE TO REPORT THE RESULTS FOR THE SUCCESS AND FAILURE SEARCHES
+        this.console.appendText("    Total probes for searchFirstHalf (successful search): " + successPerfectProbes + "\n\n");
+        this.console.appendText("       Average probes made for searchFirstHalf (successful search): " + successPerfectProbes / (float) (trials * insertCount) + "\n\n");		
+		
+        this.console.appendText("    Total probes for searchSecondHalf (failure search): " + failurePerfectProbes + "\n\n");
+        this.console.appendText("       Average probes made for searchFirstHalf (failure search): " + failurePerfectProbes / (float) (trials * insertCount) + "\n\n");				
+		
         // ADD CODE HERE TO REPORT THE RESULTS FOR THE SUCCESS AND FAILURE SEARCHES
     }
 
@@ -279,8 +321,31 @@ public class HashTableController implements Initializable {
         
         Random random = new Random();
         
-        for (int i=0; i < size; i++) {
-            result[i] = firstSyl[random.nextInt(firstSyl.length)] + secondSyl[random.nextInt(secondSyl.length)] + thirdSyl[random.nextInt(thirdSyl.length)];
+        String word;
+        boolean found;
+        int i = 0;
+        
+        while (i < size) {
+            
+            word = firstSyl[random.nextInt(firstSyl.length)] + secondSyl[random.nextInt(secondSyl.length)] + thirdSyl[random.nextInt(thirdSyl.length)];
+            
+            // assume word is not generated previously
+            found = false;
+            
+            // check if word is already generated
+            // Note: don't need to check the 1st word which must be unique by itself. So l starts from 1
+            for (int l=1; l < size; l++) {
+                if (result[l] != null && result[l].equals(word)) {
+                    found = true;
+                    break;
+                }
+            }
+            
+            if (!found) {
+                result[i] = word;
+                // if not generated previously, then continue to generate next word
+                i++;
+            }
         }
         
         //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -427,7 +492,7 @@ public class HashTableController implements Initializable {
 //>>>>>>>>>>> ADDED CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     private void searchSecondHalf(DictionaryInterface<String, String> dict, String[] data) {
         int secondHalfLength = (data.length / 2) + 1;
-        for(int i=0; i < secondHalfLength; i++) {
+        for(int i = secondHalfLength; i < data.length; i++) {
             dict.contains(data[i]);
         }    
     }

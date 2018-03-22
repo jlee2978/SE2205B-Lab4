@@ -294,6 +294,10 @@ public class HashedDictionaryOpenAddressingPerfectInstrumented<K,V> implements D
             totalProbes++;            
         } // end while
         
+        if (!found) 
+        {
+            totalProbes++;
+        }
         
         // Assertion: Either key or null is found at hashTable[index]
         if (found || (removedStateIndex == -1) )
